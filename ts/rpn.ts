@@ -12,6 +12,7 @@ const operators: Operators = {
   '%': (a: number, b: number) => a % b,
   '^': (a: number, b: number) => a ** b,
 };
+
 function RPN(expression: string): number {
   let stack: Array<number> = [];
 
