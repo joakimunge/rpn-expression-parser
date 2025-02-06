@@ -39,6 +39,8 @@ function RPN(expression: string): number {
       }
       const result = arithmetic(val1, val2);
       stack.push(result);
+    } else {
+      throw new Error('Invalid expression');
     }
   }
   return stack.shift() ?? 0;
