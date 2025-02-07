@@ -15,6 +15,22 @@ var operators = map[string]Arithmetic{
 	"^": pow,
 }
 
+func perform(stack *Stack, fn Arithmetic) (float64, error) {
+	val1, err := stack.Shift()
+
+	if err != nil {
+		return 0, errors.New("invalid RPN expression")
+	}
+
+	val2, err := stack.Shift()
+
+	if err != nil {
+		return 0, errors.New("invalid RPN expression")
+	}
+
+	return fn(val1, val2), nil
+}
+
 func RPN(exp string) (float64, error) {
 	stack := Stack{}
 	subExpression := ""
@@ -41,19 +57,10 @@ func RPN(exp string) (float64, error) {
 		arithmetic, ok := operators[item]
 
 		if ok {
-			val1, err := stack.Shift()
-
+			result, err := perform(&stack, arithmetic)
 			if err != nil {
-				return 0, errors.New("invalid RPN expression")
+				return 0, err
 			}
-
-			val2, err := stack.Shift()
-
-			if err != nil {
-				return 0, errors.New("invalid RPN expression")
-			}
-
-			result := arithmetic(val1, val2)
 			stack.Push(result)
 			continue
 		}
