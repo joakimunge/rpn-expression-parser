@@ -6,14 +6,13 @@ import (
 	"strconv"
 )
 
-type Arithmetic func(a float64, b float64) float64
-
-func add(a, b float64) float64 {
-	return a + b
-}
-
 var operators = map[string]Arithmetic{
 	"+": add,
+	"-": subtract,
+	"*": multiply,
+	"/": divide,
+	"%": modulo,
+	"^": pow,
 }
 
 func RPN(exp string) (float64, error) {
@@ -59,6 +58,11 @@ func RPN(exp string) (float64, error) {
 			continue
 		}
 
+		if item == "." {
+			subExpression += item
+			continue
+		}
+
 		_, err := strconv.ParseFloat(item, 64)
 
 		if err != nil {
@@ -79,13 +83,11 @@ func RPN(exp string) (float64, error) {
 }
 
 func main() {
-
-	result, err := RPN("5 4 + 13 + 104 + *")
+	result, err := RPN("5.3 4 * 5 + 10 -")
 
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println(result)
 	}
-
 }
